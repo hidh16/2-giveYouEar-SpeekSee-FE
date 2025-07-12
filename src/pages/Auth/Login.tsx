@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import mainApi from '../../apis/mainApi';
 import logo from '../../assets/png/logo.png';
+import { useNavigate } from 'react-router-dom';
 
 const KAKAO_REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
@@ -121,6 +122,7 @@ const handleGoogleLogin = () => {
 };
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -134,30 +136,31 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    try {
-      const res = await mainApi.post('/api/auth/login', {
-        email: form.email,
-        password: form.password,
-      });
-      if (res.data.success && res.data.data) {
-        localStorage.setItem('accessToken', res.data.data.accessToken);
-        localStorage.setItem('refreshToken', res.data.data.refreshToken);
-        alert('로그인 성공!');
-        window.location.href = '/';
-      } else {
-        alert(res.data.message || '로그인 실패');
-      }
-    } catch (err) {
-      alert('네트워크 오류');
-    } finally {
-      setIsLoading(false);
-    }
+    navigate('/');
+    // try {
+    //   const res = await mainApi.post('/api/auth/login', {
+    //     email: form.email,
+    //     password: form.password,
+    //   });
+    //   if (res.data.success && res.data.data) {
+    //     localStorage.setItem('accessToken', res.data.data.accessToken);
+    //     localStorage.setItem('refreshToken', res.data.data.refreshToken);
+    //     alert('로그인 성공!');
+        
+    //   } else {
+    //     alert(res.data.message || '로그인 실패');
+    //   }
+    // } catch (err) {
+    //   alert('네트워크 오류');
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   return (
     <Container>
       <Title>
-      <img src={logo} alt="로고" style={{ height: 60, marginRight: 12 }} />
+        <img src={logo} alt="로고" style={{ height: 60, marginRight: 12 }} />
       </Title>
       <form onSubmit={handleLogin}>
         <Label htmlFor="email">이메일</Label>
@@ -191,7 +194,7 @@ const Login: React.FC = () => {
         <OrText>또는</OrText>
         <Line />
       </Divider>
-      <JoinButton type="button" onClick={() => (window.location.href = '/signup')}>
+      <JoinButton type="button" onClick={() => navigate('/signup')}>
         회원가입하기
       </JoinButton>
 
