@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import mainApi from '../../apis/mainApi';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`

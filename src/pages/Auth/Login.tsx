@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import mainApi from '../../apis/mainApi';
 import logo from '../../assets/png/logo.png';
 import { useNavigate } from 'react-router-dom';
 
