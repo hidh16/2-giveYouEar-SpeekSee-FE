@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import 캐릭터 from '../../assets/png/캐릭터.png';
 import check from '../../assets/png/check.png';
-import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   .react-calendar__tile--now {
@@ -19,9 +18,9 @@ const GlobalStyle = createGlobalStyle`
   .react-calendar__tile{
     border: 1px solid #81b7ff; 
     border-radius: 6px;
-    margin  :2px;
-    color:  #81B7FF !important;
-    position : relative;
+    margin: 2px;
+    color: #81B7FF !important;
+    position: relative;
     height: 60px;
   }
   .react-calendar__month-view__weekdays__weekday {
@@ -29,29 +28,25 @@ const GlobalStyle = createGlobalStyle`
   }
   .react-calendar__month-view__days__day{
     display: flex;
-    flex-direction:column;
-    justify-content : center;
+    flex-direction: column;
+    justify-content: center;
   }
-
-  .react-calendar_navigation_label{
+  .react-calendar__navigation_label{
     color: #81B7FF !important;
   }
   .react-calendar__navigation__next2-button,
   .react-calendar__navigation__prev2-button {
     display: none;
   }
-  
   .react-calendar__navigation__prev-button,
-  .react-calendar__navigation__next-button{
+  .react-calendar__navigation__next-button {
     display: none;
   }
-    .react-calendar__navigation__label {
+  .react-calendar__navigation__label {
     border: 1px solid #81b7ff;
     color: #81b7ff; 
     font-weight: bold;
-}
-
-   
+  }
 `;
 
 const Container = styled.div`
@@ -71,7 +66,7 @@ const CalendarWrapper = styled.div`
   justify-content: center;
 
   .react-calendar {
-    border:  1px solid #81b7ff;
+    border: 1px solid #81b7ff;
     border-radius: 6px;
     font-family: inherit;
   }
@@ -140,7 +135,6 @@ const Attendance = () => {
     fetchAttendance();
   }, [value]);
 
-  // 날짜 비교 함수
   const isSameDate = (a: Date, b: Date) =>
     a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&
@@ -155,11 +149,17 @@ const Attendance = () => {
           onChange={val => setValue(val as Date)}
           calendarType="gregory"
           tileContent={({ date, view }) => {
+            const today = new Date();
+            const isTodayClicked = isSameDate(date, today) && isSameDate(value, today);
             const isAttendanceDay = attendanceDays.some(d => isSameDate(d, date));
-            return view === 'month' && isAttendanceDay ? (
+
+            const shouldShowCheck = isTodayClicked || isAttendanceDay;
+  
+
+            return view === 'month' && shouldShowCheck ? (
               <img
                 src={check}
-                alt="출석 체크"
+                alt="오늘 클릭 체크"
                 style={{
                   width: 14,
                   height: 14,
