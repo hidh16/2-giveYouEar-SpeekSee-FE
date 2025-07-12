@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import mainApi from '../../apis/mainApi';
+import logo from '../../assets/png/app-logo.png'
 
 
 
@@ -15,7 +16,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  background: #ddd;
+
   height: 100px;
   margin-bottom: 32px;
   display: flex;
@@ -106,7 +107,9 @@ const Signup: React.FC = () => {
 
   return (
     <Container>
-      <Title>로고 & 어플명</Title>
+      <Title>
+         <img src={logo} alt="로고" style={{ height: 60, marginRight: 12 }} />
+      </Title>
       <form onSubmit={handleSignup}>
         <Label htmlFor="nickname">
           닉네임<Required>*</Required>
