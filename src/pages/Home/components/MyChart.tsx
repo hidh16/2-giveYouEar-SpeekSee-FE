@@ -1,25 +1,38 @@
-import { useMemo } from 'react';
+import { useMemo, type JSX } from 'react';
 import { XAxis, Bar, ResponsiveContainer, BarChart, Cell } from 'recharts';
-
-const data = [
-  { name: '월', points: 0, color: '#C9E0FF' },
-  { name: '화', points: 0, color: '#B7D6FF' },
-  { name: '수', points: 0, color: '#A2CAFF' },
-  { name: '목', points: 0, color: '#93C1FF' },
-  { name: '금', points: 0, color: '#81B7FF' },
-  { name: '토', points: 0, color: '#6DABFD' },
-  { name: '일', points: 0, color: '#539DFF' },
-];
+import type { CustomizedLabelProps } from '../types/CustomizedLabelProps';
 
 const MyChart = ({ thisWeekPoints }: { thisWeekPoints: number[] }) => {
+  const data = [
+    { name: '월', points: 0, color: '#C9E0FF' },
+    { name: '화', points: 0, color: '#B7D6FF' },
+    { name: '수', points: 0, color: '#A2CAFF' },
+    { name: '목', points: 0, color: '#93C1FF' },
+    { name: '금', points: 0, color: '#81B7FF' },
+    { name: '토', points: 0, color: '#6DABFD' },
+    { name: '일', points: 0, color: '#539DFF' },
+  ];
   const chartData = useMemo(
     () =>
-      data.map((item, idx) => ({
-        ...item,
-        points: thisWeekPoints[idx] ?? 0,
-      })),
+      data.map((item, idx) => {
+        return {
+          ...item,
+          points: thisWeekPoints[idx] ?? 0,
+        };
+      }),
     [thisWeekPoints],
   );
+  const renderCustomizedLabel = ({
+    x = 0,
+    y = 0,
+    width = 0,
+    value = '',
+  }: CustomizedLabelProps): JSX.Element => (
+    <text x={x + width / 2} y={y - 6} textAnchor="middle" fontSize={10} fill="#81B7FF">
+      {value}
+    </text>
+  );
+
   return (
     <div
       style={{
@@ -30,7 +43,7 @@ const MyChart = ({ thisWeekPoints }: { thisWeekPoints: number[] }) => {
       }}
     >
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
+        <BarChart data={chartData}>
           <XAxis
             dataKey="name"
             axisLine={false}
@@ -38,19 +51,9 @@ const MyChart = ({ thisWeekPoints }: { thisWeekPoints: number[] }) => {
             tickMargin={6}
             tick={{ fill: '#81B7FF', fontSize: '12', fontWeight: '500' }}
           />
-          <Bar
-            dataKey="points"
-            barSize={18}
-            label={{
-              fill: '#81B7FF',
-              fontSize: 10,
-              fontWeight: '500',
-              position: 'top',
-            }}
-            radius={2}
-          >
+          <Bar dataKey="points" barSize={18} radius={2} label={renderCustomizedLabel}>
             {chartData.map((entry, idx) => (
-              <Cell key={idx} fill={entry.color} />
+              <Cell key={`cell-${idx}`} fill={entry.color} />
             ))}
           </Bar>
         </BarChart>
