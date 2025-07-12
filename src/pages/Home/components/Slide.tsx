@@ -69,7 +69,7 @@ const Slide = ({ idx }: { idx: number }) => {
             alt="출석체크"
             width="64"
             height="64"
-            style={{ marginBottom: '10px' }}
+            style={{ marginBottom: '1px' }}
           />
         </IconDiv>
       </RecommendingFeature>
